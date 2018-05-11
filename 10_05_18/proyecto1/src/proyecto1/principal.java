@@ -17,6 +17,7 @@ public class principal {
 		System.out.println("\n");
 		System.out.println("Oscar ha hecho:\t\t" + palabra);
 
+/*
 		if (numero > 0) {
 			System.out.println("Numero mayor que cero");
 		} else {
@@ -26,10 +27,22 @@ public class principal {
 				System.out.println("Numero menor a cero");
 			} 
 		} 
-			
+*/	
 		
+	switch (numero) {
+		case 0:
+			System.out.println("Es cero");
+			break;
+		case 1:
+			System.out.println("Es uno");
+			break;
+		case 2: 
+			System.out.println("Es dos");
+		default:
+			System.out.println("Es otro");
+			break;
+	}	
 		
-		
-	}
+  }
 
 }
