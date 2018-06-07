@@ -47,6 +47,8 @@ public class Principal {
 		System.out.println("|  6) Ver recaudación                |");
 		System.out.println("|  7) Salir del programa             |");
 		System.out.println("|____________________________________|");
+		System.out.println();
+		System.out.println("Por favor, introduzca una opción: ");
 		
 		menu = teclado.nextInt();
 		
