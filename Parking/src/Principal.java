@@ -13,6 +13,9 @@ public class Principal {
 		int menu;
 		double recaudado = 0;
 		int contadorvehiculos;
+		boolean rescoche = false;
+		boolean resmoto = false;
+		boolean resbus = false;
 
 		// Inicializamos las variables
 		fil = 5;
@@ -36,9 +39,9 @@ public class Principal {
 			System.out.println("|X - []      TAQUILLA/JAVA           |");
 			System.out.println("|____________________________________|");
 			System.out.println("|                                    |");
-			System.out.println("|          ************              |");
-			System.out.println("|          * TAQUILLA *              |");
-			System.out.println("|          ************              |");
+			System.out.println("|           ***********              |");
+			System.out.println("|           * PARKING *              |");
+			System.out.println("|           ***********              |");
 			System.out.println("|                                    |");
 			System.out.println("|  1) Ver parking                    |");
 			System.out.println("|  2) Entrada de un coche            |");
@@ -67,8 +70,12 @@ public class Principal {
 				} else
 					// llama a la función coche y añade 5 a recaudado e incrementa el numero de
 					// vehiculos
-					Coche(superficie, fil, col, teclado, recaudado);
-				contadorvehiculos++;
+					rescoche = Coche(superficie, fil, col, teclado);
+				if(rescoche == true) {
+					recaudado += 5;
+					contadorvehiculos++;
+				}
+				
 				break;
 			case 3:
 				// si la opción es la tres inserta una moto
@@ -78,9 +85,11 @@ public class Principal {
 				} else
 					// llama a la función moto y añade 3 a recaudado e incrementa el numero de
 					// vehiculos
-					Moto(superficie, fil, col, teclado, recaudado);
-				recaudado += 3;
-				contadorvehiculos++;
+					resmoto = Moto(superficie, fil, col, teclado);
+				if(resmoto == true) {
+					recaudado += 3;
+					contadorvehiculos++;
+				}
 				break;
 			case 4:
 				// si la opción es la cuatro inserta un autobus
@@ -90,9 +99,11 @@ public class Principal {
 				} else
 					// llama a la función autobus y añade 10 a recaudado e incrementa el numero de
 					// vehiculos
-					Autobus(superficie, fil, col, teclado, recaudado);
-				recaudado += 10;
-				contadorvehiculos++;
+					resbus = Autobus(superficie, fil, col, teclado); // la funcion devuelve 
+				if(resbus == true) {
+					recaudado += 3;
+					contadorvehiculos++;
+				};
 				break;
 			case 5:
 				// si la opción es la cinco sale un vehiculo
@@ -120,7 +131,7 @@ public class Principal {
 		} while (menu != 7);
 	}
 
-	private static void Coche(char[][] superficie, int fil, int col, Scanner teclado, double pasta) {
+	private static boolean Coche(char[][] superficie, int fil, int col, Scanner teclado) {
 		int filaint, columint;
 
 		// Creamos la variables que se heredan y las de la clase
@@ -139,24 +150,24 @@ public class Principal {
 		Coches Coche = new Coches(Matricula, Marca, Modelo, DNI, Elec);
 		try {
 			System.out.println("Introduzca la fila: ");
-			filaint = teclado.nextInt();
+			filaint = teclado.nextInt(); // preguntamos la fila
 			System.out.println("Introduzca la fila: ");
-			columint = teclado.nextInt();
+			columint = teclado.nextInt(); // preguntamos las columnas
 
 			if (superficie[filaint][columint] == 'X' || superficie[filaint][columint] == 'P'
-					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S'
+					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S'  	// indicamos posición invalida si hay columnas, pared, salida, entrada, coche, moto o autobus;
 					|| superficie[filaint][columint] == 'C' || superficie[filaint][columint] == 'M'
 					|| superficie[filaint][columint] == 'A') {
 				System.out.println("Posición invalida");
+				return false;
 			} else {
-				pasta += 5;
 				superficie[filaint][columint] = 'C';
 				System.out.println("Matricula: ");
 				Coche.Matricula = teclado.next();
 				System.out.println("Marca:");
 				Coche.Marca = teclado.next();
 				System.out.println("Modelo:");
-				Coche.Modelo = teclado.next();
+				Coche.Modelo = teclado.next(); // Preguntamos los datos
 				System.out.println("DNI");
 				Coche.DNI = teclado.next();
 				System.out.println("Es electrico:");
@@ -165,28 +176,30 @@ public class Principal {
 					Coche.Elec = true;
 				else
 					Coche.Elec = false;
-
 			}
 		} catch (InputMismatchException error) {
 			System.out.println("No introduzca palabras.");
-		} catch (ArrayIndexOutOfBoundsException error) {
+			return false;
+		} catch (ArrayIndexOutOfBoundsException error) {  // Retorna a false en caso de meter un valor invalido
 			System.out.println("Fila o/y columna incorrecta");
+			return false;
 		}
 
 		DibujarSuperficie(superficie, fil, col);
+		return true;
 
 	}
 
 	private static void Salir(char[][] superficie, int fil, int col, Scanner teclado) {
 		int filaint, columint;
 		try {
-			System.out.println("Introduzca la fila: ");
+			System.out.println("Introduzca la fila: "); // preguntamos la fila
 			filaint = teclado.nextInt();
-			System.out.println("Introduzca la fila: ");
+			System.out.println("Introduzca la fila: "); // preguntamos la columna
 			columint = teclado.nextInt();
 
 			if (superficie[filaint][columint] == 'X' || superficie[filaint][columint] == 'P'
-					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S') {
+					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S') { // indicamos posición invalida si hay columnas, pared, salida, entrada;
 				System.out.println("Posición invalida");
 			} else {
 				superficie[filaint][columint] = ' ';
@@ -201,7 +214,7 @@ public class Principal {
 		DibujarSuperficie(superficie, fil, col);
 	}
 
-	private static void Autobus(char[][] superficie, int fil, int col, Scanner teclado, double pasta) {
+	private static boolean Autobus(char[][] superficie, int fil, int col, Scanner teclado) {
 		int filaint, columint;
 
 		String Marca, Modelo, Matricula, Compania;
@@ -217,22 +230,22 @@ public class Principal {
 		Autobuses Autobus = new Autobuses(Matricula, Marca, Modelo, Compania, Plazas);
 		try {
 			System.out.println("Introduzca la fila: ");
-			filaint = teclado.nextInt();
+			filaint = teclado.nextInt(); // preguntamos la fila
 			System.out.println("Introduzca la fila: ");
-			columint = teclado.nextInt();
+			columint = teclado.nextInt(); // preguntamos la columna
 
 			if (superficie[filaint][columint] == 'X' || superficie[filaint][columint] == 'P'
-					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S'
+					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S'		// indicamos posición invalida si hay columnas, pared, salida, entrada, coche, moto o autobus;
 					|| superficie[filaint][columint] == 'C' || superficie[filaint][columint] == 'M'
 					|| superficie[filaint][columint] == 'A') {
 				System.out.println("Posición invalida");
+				return false;
 			} else {
-				pasta += 10;
 				superficie[filaint][columint] = 'A';
 				System.out.println("Matricula: ");
 				Autobus.Matricula = teclado.next();
 				System.out.println("Marca:");
-				Autobus.Marca = teclado.next();
+				Autobus.Marca = teclado.next();		// Preguntamos los datos
 				System.out.println("Modelo:");
 				Autobus.Modelo = teclado.next();
 				System.out.println("Compañia: ");
@@ -242,20 +255,24 @@ public class Principal {
 					Autobus.Plazas = teclado.nextInt();
 				} catch (InputMismatchException error) {
 					System.out.println("Introduce solo numeros.");
+					return false;
 				}
 
 			}
 		} catch (InputMismatchException error) {
 			System.out.println("No introduzca palabras.");
+			return false;										// Retorna a false en caso de meter un valor invalido
 		} catch (ArrayIndexOutOfBoundsException error) {
 			System.out.println("Fila o/y columna incorrecta");
+			return false;
 		}
 
 		DibujarSuperficie(superficie, fil, col);
+		return true;
 
 	}
 
-	private static void Moto(char[][] superficie, int fil, int col, Scanner teclado, double pasta) {
+	private static boolean Moto(char[][] superficie, int fil, int col, Scanner teclado) {
 		int filaint, columint;
 
 		String Marca, Modelo, Matricula;
@@ -270,21 +287,21 @@ public class Principal {
 		Moto moto = new Moto(Matricula, Marca, Modelo, Cilindrada);
 		try {
 			System.out.println("Introduzca la fila: ");
-			filaint = teclado.nextInt();
+			filaint = teclado.nextInt(); // preguntamos la fila
 			System.out.println("Introduzca la fila: ");
-			columint = teclado.nextInt();
+			columint = teclado.nextInt(); // preguntamos la columna
 
 			if (superficie[filaint][columint] == 'X' || superficie[filaint][columint] == 'P'
 					|| superficie[filaint][columint] == 'E' || superficie[filaint][columint] == 'S'
-					|| superficie[filaint][columint] == 'C' || superficie[filaint][columint] == 'M'
+					|| superficie[filaint][columint] == 'C' || superficie[filaint][columint] == 'M' // indicamos posición invalida si hay columnas, pared, salida, entrada, coche, moto o autobus;
 					|| superficie[filaint][columint] == 'A') {
 				System.out.println("Posición invalida");
+				return false;
 			} else {
-				pasta += 3;
 				superficie[filaint][columint] = 'M';
 				System.out.println("Matricula: ");
 				moto.Matricula = teclado.next();
-				System.out.println("Marca:");
+				System.out.println("Marca:"); // Preguntamos los datos
 				moto.Marca = teclado.next();
 				System.out.println("Modelo:");
 				moto.Modelo = teclado.next();
@@ -293,16 +310,20 @@ public class Principal {
 					moto.Cilindrada = teclado.nextInt();
 				} catch (InputMismatchException error) {
 					System.out.println("Introduce solo numeros.");
+					return false;
 				}
 
 			}
 		} catch (InputMismatchException error) {
 			System.out.println("No introduzca palabras.");
-		} catch (ArrayIndexOutOfBoundsException error) {
+			return false;
+		} catch (ArrayIndexOutOfBoundsException error) { // Retorna a false en caso de meter un valor invalido
 			System.out.println("Fila o/y columna incorrecta");
+			return false;
 		}
 
 		DibujarSuperficie(superficie, fil, col);
+		return true;
 
 	}
 

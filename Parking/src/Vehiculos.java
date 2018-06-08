@@ -1,5 +1,7 @@
 public class Vehiculos {
 	
+	
+	// declaramos las variables que se heredan
 	String Modelo;
 	String Matricula;
 	String Marca;
@@ -11,6 +13,8 @@ public class Vehiculos {
 		this.Matricula = matricula;
 		this.Marca = marca;
 	}
+	
+	// realizamos los getters and setters
 	
 	public String getModelo() {
 		return Modelo;
